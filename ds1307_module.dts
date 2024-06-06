@@ -1,0 +1,18 @@
+/dts-v1/;
+/plugin/;
+/ {
+	compatible = "brcm,bcm2835";
+	fragment@0 {
+		target = <&i2c1>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			ds1307_module: ds1307_module@68 {
+				compatible = "maxim,ds1307_module";
+				reg = <0x68>;
+				status = "okay";
+			};
+		};
+	};
+};
