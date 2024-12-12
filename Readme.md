@@ -1,115 +1,101 @@
 # DS1307 Driver for Raspberry Pi
 
-This project provides a driver to work with the DS1307 RTC module on a Raspberry Pi. Below are the installation instructions and usage details.
+This project provides a driver to work with the DS1307 RTC module on a Raspberry Pi. Below are the library setup and usage details.
 
 ---
 
-## Installation
+## Library Setup and Usage
 
-Follow these steps to install the driver on your Raspberry Pi:
+To complement the driver and make the module easier to use, a library has been created.
 
-1. Clone the repository using the command:
+### 1. Library Setup
+
+1. Ensure the files `ds1307_library.c`, `ds1307_library.h`, and `libds1307_library.a` are in the same folder as your program.
+
+2. Compile your program with the command:
    ```bash
-   git clone https://github.com/Shuzukochan/DS1307-Driver-For-Raspberry-Pi
+   gcc codecuaoban.c -L. -lds1307_library -o codecuaoban
    ```
 
-2. Navigate to the downloaded directory:
-   ```bash
-   cd DS1307-Driver-For-Raspberry-Pi
-   ```
+### 2. Library Functions
 
-3. Copy the `ds1307_module.dtbo` file to the `/boot/overlay` directory:
-   ```bash
-   sudo cp ds1307_module.dtbo /boot/overlay
-   ```
+#### 2.1 Open Module
 
-4. Edit the `config.txt` file in the `/boot` directory to add the following line:
-   ```text
-   dtoverlay=ds1307_module
-   ```
-   Save and reboot the Raspberry Pi.
+```c
+ds1307Open();
+```
+**Description:** Opens the module and initializes the I2C connection.
 
-5. Load the driver using:
-   ```bash
-   sudo insmod ds1307.ko
-   ```
-   Use the `dmesg` command to check if the driver has been installed. Look for a message like:
-   ```
-   DS1307 Driver installed
-   ```
+#### 2.2 Set System Time on the Raspberry Pi
 
-   If you want to unload the driver later, use:
-   ```bash
-   sudo rmmod ds1307_module.dtbo
-   ```
+```c
+setTime();
+```
+**Description:** Reads the current system time from the Raspberry Pi and writes it to the module.
+
+#### 2.3 Set Custom Time
+
+```c
+setCustom(int dayOfWeek, int day, int month, int year, int hour, int min, int sec);
+```
+**Description:** Sets a custom time in the module based on user-defined values.
+
+**Note:** Parameters must be provided in the order of day of the week, day, month, year, hour, minute, second.
+
+#### 2.4 Read Time
+
+```c
+getTime(date);
+```
+**Description:** Reads the time stored in the module and returns the values.
+
+**Note:** Declare an array `int date[7]` before use. The returned values are as follows:
+- `date[0]` = Day
+- `date[1]` = Month
+- `date[2]` = Year
+- `date[3]` = Hour (24-hour format)
+- `date[4]` = Minute
+- `date[5]` = Second
+- `date[6]` = Day of the week (Sunday = 1)
+
+#### 2.5 Close Module
+
+```c
+ds1307Close();
+```
+**Description:** Closes the module and terminates the I2C connection.
+
+**Note:** This function must be called after using the module.
 
 ---
 
-## Driver ioctl Functions
+## Example Program
 
-The driver provides several ioctl functions to interact with the DS1307 module:
+Below is an example program to write the time to the module (from user input or system time), read the time from the module, and display it on the terminal:
 
-### Reading Values
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "ds1307_library.h"
 
-1. **Read Seconds**
-   ```c
-   ioctl(fd, ds1307_ioctl_Read_Second, &second);
-   printf("Second: %d", second);
-   ```
+int date[7];
 
-2. **Read Minutes**
-   ```c
-   ioctl(fd, ds1307_ioctl_Read_Minute, &minute);
-   printf("Minute: %d", minute);
-   ```
+int main(void) {
+    ds1307Open();
 
-3. **Read Hours**
-   ```c
-   ioctl(fd, ds1307_ioctl_Read_Hour, &hour);
-   printf("Hour: %d", hour);
-   ```
+    // Uncomment the following line to set custom time
+    // setCustom(5, 25, 5, 2024, 8, 40, 40);
+    
+    setTime();
+    getTime(date);
 
-4. **Read Day of the Week**
-   ```c
-   ioctl(fd, ds1307_ioctl_Read_Dayofweek, &dayofweek);
-   printf("Day of Week: %d", dayofweek + 1); // Sunday = 1
-   ```
+    printf("Current date and time from the module:\n");
+    printf("Date: %02d-%02d-%02d\n", date[0], date[1], date[2]);
+    printf("Time: %02d:%02d:%02d\n", date[3], date[4], date[5]);
+    printf("Day of the week: %d\n", date[6]);
 
-5. **Read Day**
-   ```c
-   ioctl(fd, ds1307_ioctl_Read_Day, &day);
-   printf("Day: %d", day);
-   ```
+    ds1307Close();
+    while (1);
 
-6. **Read Month**
-   ```c
-   ioctl(fd, ds1307_ioctl_Read_Month, &month);
-   printf("Month: %d", month);
-   ```
-
-7. **Read Year**
-   ```c
-   ioctl(fd, ds1307_ioctl_Read_Year, &year);
-   printf("Year: %d", year);
-   ```
-
-### Writing Values
-
-- **Write Custom Date and Time**
-   ```c
-   buffer[8] = {0, 10, 20, 04, 03, 06, 06, 24};
-   ioctl(fd, ds1307_ioctl_Write_Data, buffer);
-   ```
-
-### Reading System Time
-
-- **Get Current System Time**
-   ```c
-   ioctl(fd, ds1307_ioctl_Get_Time, &get);
-   ```
-
----
-
-## License
-
-This project is licensed under the MIT License. Feel free to use and modify it.
+    return 0;
+}
