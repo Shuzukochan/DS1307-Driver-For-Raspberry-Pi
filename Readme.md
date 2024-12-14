@@ -29,23 +29,24 @@ To connect the DS1307 module to the Raspberry Pi 4, use the following wiring tab
    ```bash
    sudo apt-get install raspberrypi-kernel-headers
    ```
-
-2. Clone the driver repository from GitHub:
-   ```bash
-   git clone https://github.com/Shuzukochan/DS1307-Driver-For-Raspberry-Pi-4.git
-   ```
-
-3. Copy the overlay file to the appropriate directory:
-   ```bash
-   cd DS1307-Driver-For-Raspberry-Pi-4
-   sudo cp ds1307_module.dtbo /boot/overlays
-   ```
-
-4. Modify the `/boot/config.txt` file by adding the following lines:
+   
+2. Modify the `/boot/config.txt` file by adding the following lines:
    ```txt
    dtoverlay=ds1307_module
    arm_64bit=0
    dtparam=i2c_arm=on
+   ```
+
+3. Clone the driver repository from GitHub:
+   ```bash
+   git clone https://github.com/Shuzukochan/DS1307-Driver-For-Raspberry-Pi-4.git
+   ```
+
+4. Copy the overlay file to the appropriate directory:
+   ```bash
+   cd DS1307-Driver-For-Raspberry-Pi-4
+   make
+   sudo cp ds1307_module.dtbo /boot/overlays
    ```
 
 5. Reboot the Raspberry Pi:
@@ -56,7 +57,6 @@ To connect the DS1307 module to the Raspberry Pi 4, use the following wiring tab
 6. Insert the DS1307 kernel module:
    ```bash
    cd DS1307-Driver-For-Raspberry-Pi-4
-   make
    sudo insmod ds1307.ko
    ```
 
