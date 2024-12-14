@@ -1,6 +1,8 @@
-# DS1307 Driver for Raspberry Pi
+# DS1307 Driver for Raspberry Pi 4
 
-This project provides a driver to work with the DS1307 RTC module on a Raspberry Pi. The driver is compatible with Raspberry Pi OS 32-bit (Legacy). Below are the library setup and usage details.
+This project provides a driver to work with the DS1307 RTC module on a Raspberry Pi 4.
+
+The driver is compatible with Raspberry Pi OS 32-bit (Legacy). Below are the library setup and usage details.
 
 ---
 
@@ -35,7 +37,7 @@ To connect the DS1307 module to the Raspberry Pi 4, use the following wiring tab
 
 3. Copy the overlay file to the appropriate directory:
    ```bash
-   cd DS1307-Driver-For-Raspberry-Pi-4/
+   cd DS1307-Driver-For-Raspberry-Pi-4
    sudo cp ds1307_module.dtbo /boot/overlays
    ```
 
@@ -53,7 +55,7 @@ To connect the DS1307 module to the Raspberry Pi 4, use the following wiring tab
 
 6. Insert the DS1307 kernel module:
    ```bash
-   cd DS1307-Driver-For-Raspberry-Pi-4/
+   cd DS1307-Driver-For-Raspberry-Pi-4
    make
    sudo insmod ds1307.ko
    ```
@@ -64,12 +66,12 @@ To connect the DS1307 module to the Raspberry Pi 4, use the following wiring tab
 
 2. Compile your program with the following command:
    ```bash
-   gcc codecuaoban.c -L. -lds1307_library -o codecuaoban
+   gcc yourcode.c -L. -lds1307_library -o yourcode
    ```
 
 3. Run your compiled program:
    ```bash
-   sudo ./codecuaoban
+   sudo ./yourcode
    ```
 
 ### 2. Library Functions
@@ -130,10 +132,10 @@ You can test the driver with the following example program:
 
 Run the example program with:
 ```bash
-./ds1307_userspace_example
+sudo ./ds1307_userspace_example
 ```
 
-ds1307_userspace_example is an example program to write the time to the module (from user input or system time), read the time from the module, and display it on the terminal:
+**`ds1307_userspace_example`** is an example program to write the time to the module (from user input or system time), read the time from the module, and display it on the terminal:
 
 ```c
 #include <stdio.h>
