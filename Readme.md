@@ -170,6 +170,5 @@ int main(void) {
 ### Notes:
 - This driver has been tested on Raspberry Pi OS Legacy 32-bit (Bullseye).
 - The kernel module `ds1307.ko` and the device overlay `ds1307_module.dtbo` are required for the driver to work properly.
-- Ensure that you have configured I2C properly on your Raspberry Pi before using the module.
 
 ---
