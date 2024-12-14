@@ -2,7 +2,7 @@
 
 This project provides a driver to work with the DS1307 RTC module on a Raspberry Pi 4.
 
-The driver is compatible with Raspberry Pi OS 32-bit (Legacy). Below are the library setup and usage details.
+The driver is compatible with Raspberry Pi OS (Legacy, 32-bit). Below are the library setup and usage details.
 
 ---
 
