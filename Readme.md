@@ -45,7 +45,6 @@ To connect the DS1307 module to the Raspberry Pi 4, use the following wiring tab
 4. Copy the overlay file to the appropriate directory:
    ```bash
    cd DS1307-Driver-For-Raspberry-Pi-4
-   make
    sudo cp ds1307_module.dtbo /boot/overlays
    ```
 
@@ -57,6 +56,7 @@ To connect the DS1307 module to the Raspberry Pi 4, use the following wiring tab
 6. Insert the DS1307 kernel module:
    ```bash
    cd DS1307-Driver-For-Raspberry-Pi-4
+   make
    sudo insmod ds1307.ko
    ```
 
