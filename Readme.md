@@ -66,12 +66,12 @@ To connect the DS1307 module to the Raspberry Pi 4, use the following wiring tab
 
 2. Compile your program with the following command:
    ```bash
-   gcc yourCode.c -L. -lds1307_library -o yourCode
+   gcc yourProgram.c -L. -lds1307_library -o yourProgram
    ```
 
 3. Run your compiled program:
    ```bash
-   sudo ./yourCode
+   sudo ./yourProgram
    ```
 
 ### 2. Library Functions
